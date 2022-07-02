@@ -44,7 +44,7 @@ class MEState extends FlxState
 		_demoCamera.bgColor.alphaFloat = 0.0;
 
 		// Add UI view
-		add(new EditorView(generateCallback));
+		add(new EditorView(UI_WIDTH, generateCallback));
 
 		// Setup the metaball display area
 		_demoPaneCenter = getDisplayPaneCenter();
@@ -86,7 +86,7 @@ class MEState extends FlxState
 		return new FlxPoint((FlxG.width - UI_WIDTH) / 2, FlxG.height / 2);
 	}
 
-	override public function update(elapsed:Float)
+	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 

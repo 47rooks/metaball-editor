@@ -67,7 +67,7 @@
                 <header width="100%">
                     <column id="r" text="f(x)" width="60"/>
                     <column id="equalsSign" text="=" width="30"/>
-                    <column id="transformEqn" text="Equation" width="100%" />
+                    <column id="transformEqn" text="Equation" width="100%"/>
                 </header>
                 <item-renderer verticalAlign="center">
                     <textfield id="r" placeholder="f(x)" width="100%"/>
@@ -98,9 +98,9 @@
                 </vbox>
             </vbox>
             <hbox>
-                <button id="generateButton" text="Generate" style="color: blue;" styleName="button-text"/>
-                <button id="saveDefinitionButton" text="Save Definition" style="color: blue;" disabled="true" styleName="button-text"/>
-                <!-- <button id="savePNGButton" text="Save PNG" style="color: blue;" styleName="button-text"/> -->
+                <button id="generateButton" text="Generate" styleName="button-text"/>
+                <button id="saveDefinitionButton" text="Save Definition" disabled="true" styleName="button-text"/>
+                <!-- <button id="savePNGButton" text="Save PNG" styleName="button-text"/> -->
             </hbox>
         </vbox>
     </frame>

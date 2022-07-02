@@ -25,13 +25,22 @@ typedef UIInputs =
 class EditorView extends VBox
 {
 	var _generateButtonCbk:(uiInputs:UIInputs) -> Null<Array<ErrorData>>;
+	var _uiWidth:Int;
 
 	@:bind(saveDefinitionButton.disabled)
 	var _saveRequired:Bool = true;
 
-	public function new(generateButtonCbk:(uiInputs:UIInputs) -> Null<Array<ErrorData>>)
+	/**
+	 * Constructor
+	 *
+	 * @param uiWidth - width of the UI portion of the window in pixels
+	 * @param generateButtonCbk - function to call when the generate button it pressed. Receives the
+	 * input collected in the UI.
+	 */
+	public function new(uiWidth:Int, generateButtonCbk:(uiInputs:UIInputs) -> Null<Array<ErrorData>>)
 	{
 		super();
+		_uiWidth = uiWidth;
 		_generateButtonCbk = generateButtonCbk;
 
 		_saveRequired = false;
@@ -110,7 +119,8 @@ class EditorView extends VBox
 		{
 			if (event.button == DialogButton.OK)
 			{
-				Dialogs.messageBox("File saved!", "Save Result", MessageBoxType.TYPE_INFO);
+				var mb = Dialogs.messageBox("File saved!", "Save Result", MessageBoxType.TYPE_INFO);
+				mb.left = Math.floor(_uiWidth / 2 - mb.width / 2);
 			}
 		}
 		dialog.fileInfo = {
