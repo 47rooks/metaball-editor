@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<vbox style="padding: 5px;">
+    <style>
+        /* #editorheading > label,
+        #demoheading > label,
+        #generalheading > label  */
+        .section-heading > label {
+            font-size: 18px;
+        }
+        label.subsection-heading,
+        .button-text > label {
+            font-size: 14px;
+            margin-top: 2px;
+            margin-bottom: 2px;
+        }
+        .textfield, .header .label {
+            font-size: 12px;
+        }
+    </style>
+    <frame text="Editor" styleName="section-heading">
+        <vbox>
+            <label text="Falloff Equations" styleName="subsection-heading"/>
+            <tableview id="falloffEquations" width="850" height="260" contentWidth="100%">
+                <header width="100%">
+                    <column id="outVar" text="f(x)" width="60"/>
+                    <column id="equalsSign" text="=" width="30"/>
+                    <column id="eqn" text="Equation" width="100%" />
+                    <vbox style="spacing:0;">
+                        <column text="Domain" width="100%" style="border-bottom:none;border-right:none;text-align:center" />
+                        <hbox style="spacing:0;">
+                            <column id="Variable" text="Variable" width="85" />
+                            <column id="Min" text="From" width="105" />
+                            <column id="Max" text="To" width="105" />
+                        </hbox>
+                    </vbox>
+                </header>
+
+                <item-renderer verticalAlign="center">
+                    <textfield id="outVar" placeholder="f(x)" width="100%"/>
+                </item-renderer>
+                <item-renderer verticalAlign="center">
+                    <label id="equalsSign" text="=" width="100%" style="font-size:12px"/>
+                </item-renderer>
+                <item-renderer verticalAlign="center">
+                    <textfield id="eqn" placeholder="Enter equation" width="100%"/>
+                </item-renderer>
+                <item-renderer verticalAlign="center">
+                    <textfield id="Variable" placeholder="var" width="100%"/>
+                </item-renderer>
+                <item-renderer verticalAlign="center">
+                    <textfield id="Min" placeholder="minimum"  width="100%"/>
+                </item-renderer>
+                <item-renderer verticalAlign="center">
+                    <textfield id="Max" placeholder="maximum"  width="100%"/>
+                </item-renderer>
+
+                <data id="falloffEquations">
+                    <item/>
+                    <item/>
+                    <item/>
+                    <item/>
+                    <item/>
+                </data>
+            </tableview>
+            <label text="X,Y Transform" styleName="subsection-heading"/>
+            <tableview id="xyTransform" width="850" height="80" contentWidth="100%">
+                <header width="100%">
+                    <column id="r" text="f(x)" width="60"/>
+                    <column id="equalsSign" text="=" width="30"/>
+                    <column id="transformEqn" text="Equation" width="100%" />
+                </header>
+                <item-renderer verticalAlign="center">
+                    <textfield id="r" placeholder="f(x)" width="100%"/>
+                </item-renderer>
+                <item-renderer verticalAlign="center">
+                    <label id="equalsSign" text="=" width="100%" style="font-size:12px"/>
+                </item-renderer>
+                <item-renderer verticalAlign="center">
+                    <textfield id="transformEqn" placeholder="Enter equation" width="100%"/>
+                </item-renderer>
+                <data id="xyTransform">
+                    <item/>
+                </data>
+            </tableview>
+            <vbox>
+                <label text="Size" styleName="subsection-heading"/>
+                <vbox>
+                    <hbox>
+                        <label text="X" styleName="subsection-heading"/>
+                        <textfield id="xpixels" text="256"/>
+                        <label text="px" styleName="subsection-heading"/>
+                    </hbox>
+                    <hbox>
+                        <label text="Y" styleName="subsection-heading"/>
+                        <textfield id="ypixels" text="256"/>
+                        <label text="px" styleName="subsection-heading"/>
+                    </hbox>
+                </vbox>
+            </vbox>
+            <hbox>
+                <button id="generateButton" text="Generate" style="color: blue;" styleName="button-text"/>
+                <button id="saveDefinitionButton" text="Save Definition" style="color: blue;" disabled="true" styleName="button-text"/>
+                <!-- <button id="savePNGButton" text="Save PNG" style="color: blue;" styleName="button-text"/> -->
+            </hbox>
+        </vbox>
+    </frame>
+
+    <!-- <frame text="Demo" styleName="sectionheading">
+        <vbox>
+            <hbox>
+                <label text="Mode" verticalAlign="center"/>
+                <optionbox text="Editor" selected="true" onchange="trace(this.text + ' changed')" />
+                <optionbox text="Demo" onchange="trace(this.text + ' changed')" />
+            </hbox>
+
+            <hbox>
+                <label text="Number of metaballs" verticalAlign="center"/>
+                <slider pos="20"/>
+            </hbox>
+
+            <hbox>
+                <label text="Zoom" verticalAlign="center"/>
+                <slider pos="50"/>
+            </hbox>
+        </vbox>
+    </frame> -->
+    <frame text="General" styleName="section-heading">
+        <button text="Exit" id="exitButton" style="color: red;" styleName="button-text"/>
+    </frame>
+</vbox>
