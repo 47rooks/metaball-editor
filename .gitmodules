@@ -25,3 +25,6 @@
 [submodule "libs/polygonal-ds"]
 	path = libs/polygonal-ds
 	url = https://github.com/polygonal/ds.git
+[submodule "libs/flixel"]
+	path = libs/flixel
+	url = https://github.com/HaxeFlixel/flixel
