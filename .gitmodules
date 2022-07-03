@@ -1,0 +1,12 @@
+[submodule "libs/lime"]
+	path = libs/lime
+	url = https://github.com/openfl/lime
+[submodule "libs/format"]
+	path = libs/format
+	url = https://github.com/HaxeFoundation/format.git
+[submodule "libs/hxp"]
+	path = libs/hxp
+	url = https://github.com/openfl/hxp.git
+[submodule "libs/hxcpp"]
+	path = libs/hxcpp
+	url = https://github.com/HaxeFoundation/hxcpp.git
