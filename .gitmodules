@@ -10,3 +10,18 @@
 [submodule "libs/hxcpp"]
 	path = libs/hxcpp
 	url = https://github.com/HaxeFoundation/hxcpp.git
+[submodule "libs/openfl"]
+	path = libs/openfl
+	url = https://github.com/openfl/openfl.git
+[submodule "libs/haxeui-core"]
+	path = libs/haxeui-core
+	url = https://github.com/haxeui/haxeui-core.git
+[submodule "libs/haxeui-flixel"]
+	path = libs/haxeui-flixel
+	url = https://github.com/haxeui/haxeui-flixel.git
+[submodule "libs/formula"]
+	path = libs/formula
+	url = https://github.com/maitag/formula.git
+[submodule "libs/polygonal-ds"]
+	path = libs/polygonal-ds
+	url = https://github.com/polygonal/ds.git
