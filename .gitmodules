@@ -28,3 +28,6 @@
 [submodule "libs/flixel"]
 	path = libs/flixel
 	url = https://github.com/HaxeFlixel/flixel
+[submodule "libs/flixel-addons"]
+	path = libs/flixel-addons
+	url = https://github.com/HaxeFlixel/flixel-addons.git
