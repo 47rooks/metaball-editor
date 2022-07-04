@@ -147,7 +147,7 @@ class EditorView extends VBox
 				}
 				else
 				{
-					tf.text = null;
+					tf.text = "";
 				}
 			}
 		}

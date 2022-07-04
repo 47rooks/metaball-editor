@@ -4,6 +4,7 @@ import EditorView.UIInputs;
 import EquationSystem.ErrorData;
 import flixel.FlxCamera;
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
@@ -22,6 +23,11 @@ class MEState extends FlxState
 	var _mbHeight:Int;
 	var _demoPaneCenter:FlxPoint;
 	var _editorSprite:Metaball;
+
+	var _topLeft:FlxSprite;
+	var _bottomLeft:FlxSprite;
+	var _topRight:FlxSprite;
+	var _bottomRight:FlxSprite;
 
 	override public function new()
 	{
@@ -103,14 +109,67 @@ class MEState extends FlxState
 				remove(_editorSprite);
 			}
 
+			clearCornerMarkers();
+
 			// Create new metaball bitmap
 			var mb = new MetaballBuilder(_equations, _mbWidth, _mbHeight);
 			var bmd = mb.generate();
 			_editorSprite = new Metaball(_demoPaneCenter.x, _demoPaneCenter.y, bmd, _demoCamera);
 			add(_editorSprite);
 
+			// Add corner marker sprites
+			addUpdateCornerMarkers();
+
 			// clear the formulaeUpdated flag so we only do this once per new set of equations
 			_formulaeUpdated = false;
 		}
+	}
+
+	private function clearCornerMarkers():Void
+	{
+		remove(_topLeft);
+		remove(_bottomLeft);
+		remove(_topRight);
+		remove(_bottomRight);
+	}
+
+	private function addUpdateCornerMarkers():Void
+	{
+		final LINE_LENGTH = 20;
+		final LINE_THICKNESS = 2;
+		var horiz = new FlxSprite();
+		horiz.makeGraphic(LINE_LENGTH, LINE_THICKNESS, FlxColor.WHITE);
+		var vert = new FlxSprite();
+		vert.makeGraphic(LINE_THICKNESS, LINE_LENGTH, FlxColor.WHITE);
+		_topLeft = new FlxSprite().makeGraphic(LINE_LENGTH, LINE_LENGTH, FlxColor.TRANSPARENT);
+		_topLeft.stamp(horiz);
+		_topLeft.stamp(vert);
+
+		// top left
+		_topLeft.x = _demoPaneCenter.x - Math.floor(_mbWidth / 2) - LINE_THICKNESS;
+		_topLeft.y = _demoPaneCenter.y - Math.floor(_mbHeight / 2) - LINE_THICKNESS;
+		_topLeft.cameras = [_demoCamera];
+		add(_topLeft);
+
+		_topRight = new FlxSprite().loadGraphicFromSprite(_topLeft);
+		_topRight.angle = 90;
+		_topRight.x = _demoPaneCenter.x + Math.floor(_mbWidth / 2) + LINE_THICKNESS - _topRight.width;
+		_topRight.y = _topLeft.y;
+		_topRight.cameras = [_demoCamera];
+		add(_topRight);
+
+		_bottomLeft = new FlxSprite().loadGraphicFromSprite(_topLeft);
+		_bottomLeft.angle = 270;
+		_bottomLeft.x = _topLeft.x;
+		_bottomLeft.y = _demoPaneCenter.y + Math.floor(_mbHeight / 2) + LINE_THICKNESS - _bottomLeft.height;
+		_bottomLeft.cameras = [_demoCamera];
+		add(_bottomLeft);
+
+		_bottomRight = new FlxSprite().loadGraphicFromSprite(_topLeft);
+		_bottomRight.angle = 180;
+		_bottomRight.x = _topRight.x;
+		_bottomRight.y = _bottomLeft.y;
+		_bottomRight.cameras = [_demoCamera];
+		add(_bottomRight);
 	}
 }
