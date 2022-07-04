@@ -6,6 +6,7 @@ import haxe.ui.containers.VBox;
 import haxe.ui.containers.dialogs.Dialog.DialogButton;
 import haxe.ui.containers.dialogs.Dialogs;
 import haxe.ui.containers.dialogs.MessageBox.MessageBoxType;
+import haxe.ui.containers.dialogs.OpenFileDialog;
 import haxe.ui.containers.dialogs.SaveFileDialog;
 import haxe.ui.events.MouseEvent;
 
@@ -108,10 +109,9 @@ class EditorView extends VBox
 	private function onSaveDef(e:MouseEvent)
 	{
 		saveDefinitionButton.disabled = true;
-		trace('json=${haxe.Json.stringify(marshalInputs())}');
 		var dialog = new SaveFileDialog();
 		dialog.options = {
-			title: "Save Text File",
+			title: "Save Metaball Definition",
 			writeAsBinary: false,
 			extensions: FileDialogTypes.TEXTS
 		}
@@ -119,7 +119,7 @@ class EditorView extends VBox
 		{
 			if (event.button == DialogButton.OK)
 			{
-				var mb = Dialogs.messageBox("File saved!", "Save Result", MessageBoxType.TYPE_INFO);
+				var mb = Dialogs.messageBox("Definition saved!", "Notification", MessageBoxType.TYPE_INFO);
 				mb.left = Math.floor(_uiWidth / 2 - mb.width / 2);
 			}
 		}
@@ -129,6 +129,92 @@ class EditorView extends VBox
 		}
 		dialog.show();
 		saveDefinitionButton.disabled = false;
+	}
+
+	private function clearUI():Void
+	{
+		// Clear the falloff equation inputs
+		for (i in 0...falloffEquations.numComponents)
+		{
+			var r = falloffEquations.getComponentAt(i);
+			for (j in 0...r.numComponents)
+			{
+				var c = r.getComponentAt(j);
+				var tf = c.getComponentAt(0);
+				if (j == 1)
+				{
+					tf.text = "=";
+				}
+				else
+				{
+					tf.text = null;
+				}
+			}
+		}
+
+		// Clear the xy transform inputs
+		var t = xyTransform.getComponentAt(0);
+		for (j in 0...t.numComponents)
+		{
+			var c = t.getComponentAt(j);
+			var tf = c.getComponentAt(0);
+			if (j == 1)
+			{
+				tf.text = "=";
+			}
+			else
+			{
+				tf.text = null;
+			}
+		}
+
+		xpixels.text = "256";
+		ypixels.text = "256";
+	}
+
+	private function unmarshalDefinitionToUI(definitionText:String):Void
+	{
+		clearUI();
+		var definition:UIInputs = haxe.Json.parse(definitionText);
+		for (indx => foe in definition.falloffFunctions)
+		{
+			var r = falloffEquations.getComponentAt(indx);
+			r.getComponentAt(0).getComponentAt(0).text = foe[0];
+			r.getComponentAt(1).getComponentAt(0).text = foe[1];
+			r.getComponentAt(2).getComponentAt(0).text = foe[2];
+			r.getComponentAt(3).getComponentAt(0).text = foe[3];
+			r.getComponentAt(4).getComponentAt(0).text = foe[4];
+			r.getComponentAt(5).getComponentAt(0).text = foe[5];
+		}
+
+		var r = xyTransform.getComponentAt(0);
+		r.getComponentAt(0).getComponentAt(0).text = definition.xyTransform[0];
+		r.getComponentAt(1).getComponentAt(0).text = definition.xyTransform[1];
+		r.getComponentAt(2).getComponentAt(0).text = definition.xyTransform[2];
+
+		xpixels.text = Std.string(definition.x);
+		ypixels.text = Std.string(definition.y);
+	}
+
+	@:bind(loadDefinitionButton, MouseEvent.CLICK)
+	private function onLoadDef(e:MouseEvent)
+	{
+		var dialog = new OpenFileDialog();
+		dialog.options = {
+			readContents: true,
+			title: "Open Metaball Definition File",
+			readAsBinary: false,
+			extensions: FileDialogTypes.TEXTS
+		};
+		dialog.onDialogClosed = function(event)
+		{
+			if (event.button == DialogButton.OK)
+			{
+				unmarshalDefinitionToUI(dialog.selectedFiles[0].text);
+				onGenerate(null);
+			}
+		}
+		dialog.show();
 	}
 
 	@:bind(exitButton, MouseEvent.CLICK)

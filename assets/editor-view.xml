@@ -100,6 +100,7 @@
             <hbox>
                 <button id="generateButton" text="Generate" styleName="button-text"/>
                 <button id="saveDefinitionButton" text="Save Definition" disabled="true" styleName="button-text"/>
+                <button id="loadDefinitionButton" text="Load Definition" styleName="button-text"/>
                 <!-- <button id="savePNGButton" text="Save PNG" styleName="button-text"/> -->
             </hbox>
         </vbox>

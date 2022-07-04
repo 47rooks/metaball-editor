@@ -2,8 +2,6 @@
 
    * add button to each row to clear the equation
    * set domain limits to min -inf and max +inf, including placeholder
-   * add ability to save definition to a user specified file
-   * add ability to load a save definition
    * add error display
    * expand piecewise equation restrictions to work directly with x,y so intermediate equation is not required
    * add PNG save
