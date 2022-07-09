@@ -1,9 +1,5 @@
 package;
 
-import ds.ListSet;
-import ds.Set;
-import flixel.system.scaleModes.FixedScaleMode;
-
 typedef Function =
 {
 	var fx:String;
@@ -19,8 +15,15 @@ typedef PiecewiseFunction =
 	var domainMaximum:Float;
 }
 
+enum EquationType
+{
+	FALLOFF;
+	XY_TRANSFORM;
+}
+
 typedef ErrorData =
 {
+	var eqnType:EquationType;
 	var eqnNumber:Int;
 	var eqnFieldNumber:Int;
 	var errorPos:Int;
@@ -102,6 +105,7 @@ class EquationSystem
 						else
 						{
 							errors.push({
+								eqnType: EquationType.FALLOFF,
 								eqnNumber: i,
 								eqnFieldNumber: j,
 								errorPos: -1,
@@ -119,11 +123,13 @@ class EquationSystem
 						}
 						catch (e:Dynamic)
 						{
+							trace('e=${e}');
 							errors.push({
+								eqnType: EquationType.FALLOFF,
 								eqnNumber: i,
 								eqnFieldNumber: j,
 								errorPos: e.pos,
-								errorMsg: 'formula error: ${e.msg}'
+								errorMsg: 'formula error: ${e}'
 							});
 							formulaHasErrors = true;
 						}
@@ -155,6 +161,7 @@ class EquationSystem
 						if (tDomainVar != null && Math.isNaN(tDomainMin))
 						{
 							errors.push({
+								eqnType: EquationType.FALLOFF,
 								eqnNumber: i,
 								eqnFieldNumber: j,
 								errorPos: -1,
@@ -167,6 +174,7 @@ class EquationSystem
 						if (tDomainVar != null && Math.isNaN(tDomainMax))
 						{
 							errors.push({
+								eqnType: EquationType.FALLOFF,
 								eqnNumber: i,
 								eqnFieldNumber: j,
 								errorPos: -1,

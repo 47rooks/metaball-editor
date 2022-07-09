@@ -8,6 +8,7 @@ import haxe.ui.containers.dialogs.Dialogs;
 import haxe.ui.containers.dialogs.MessageBox.MessageBoxType;
 import haxe.ui.containers.dialogs.OpenFileDialog;
 import haxe.ui.containers.dialogs.SaveFileDialog;
+import haxe.ui.data.ArrayDataSource;
 import haxe.ui.events.MouseEvent;
 
 typedef UIInputs =
@@ -43,7 +44,11 @@ class EditorView extends VBox
 		super();
 		_uiWidth = uiWidth;
 		_generateButtonCbk = generateButtonCbk;
-
+		// falloffEquations.dataSource = new ArrayDataSource<FalloffEquationRow>();
+		for (i in 0...5)
+		{
+			falloffEquations.dataSource.add(new FalloffEquationRow());
+		}
 		_saveRequired = false;
 
 		saveDefinitionButton.disabled = _saveRequired;
@@ -54,10 +59,27 @@ class EditorView extends VBox
 	{
 		generateButton.disabled = true;
 
+		trace('size of ds=${falloffEquations.dataSource.size}');
+
 		// Process the equations
 		var uiInputs = marshalInputs();
-		var errors = _generateButtonCbk(uiInputs); // falloffFunctions,
-
+		var errors = _generateButtonCbk(uiInputs);
+		if (errors != null)
+		{
+			for (err in errors)
+			{
+				switch (err.eqnType)
+				{
+					case FALLOFF:
+						var r = falloffEquations.getComponentAt(err.eqnNumber).getComponentAt(err.eqnFieldNumber);
+						var errField = r.findComponent("theError");
+						errField.text = err.errorMsg;
+						errField.addClass("invalid-value");
+						errField.show();
+					case XY_TRANSFORM:
+				}
+			}
+		}
 		generateButton.disabled = false;
 	}
 
@@ -65,20 +87,14 @@ class EditorView extends VBox
 	{
 		// Get the falloff functions
 		var falloffFunctions = new Array<Array<String>>();
-		for (i in 0...falloffEquations.numComponents)
+
+		for (i in 0...falloffEquations.dataSource.size)
 		{
-			var r = falloffEquations.getComponentAt(i);
 			var eqnStr = new Array<String>();
-			for (j in 0...r.numComponents)
+			var r:FalloffEquationRow = falloffEquations.dataSource.get(i);
+			if (r.outVar != null && r.outVar.length > 0 && r.eqn != null && r.eqn.length > 0)
 			{
-				var c = r.getComponentAt(j);
-				var tf = c.getComponentAt(0);
-				eqnStr.push(tf.text);
-			}
-			if (eqnStr[0] != null && eqnStr[0].length > 0 && eqnStr[1] != null && eqnStr[1].length > 0)
-			{
-				// Only keep equations that are entered
-				falloffFunctions.push(eqnStr);
+				falloffFunctions.push(r.toArray());
 			}
 		}
 
@@ -133,25 +149,6 @@ class EditorView extends VBox
 
 	private function clearUI():Void
 	{
-		// Clear the falloff equation inputs
-		for (i in 0...falloffEquations.numComponents)
-		{
-			var r = falloffEquations.getComponentAt(i);
-			for (j in 0...r.numComponents)
-			{
-				var c = r.getComponentAt(j);
-				var tf = c.getComponentAt(0);
-				if (j == 1)
-				{
-					tf.text = "=";
-				}
-				else
-				{
-					tf.text = "";
-				}
-			}
-		}
-
 		// Clear the xy transform inputs
 		var t = xyTransform.getComponentAt(0);
 		for (j in 0...t.numComponents)
@@ -176,15 +173,10 @@ class EditorView extends VBox
 	{
 		clearUI();
 		var definition:UIInputs = haxe.Json.parse(definitionText);
+		falloffEquations.dataSource.clear();
 		for (indx => foe in definition.falloffFunctions)
 		{
-			var r = falloffEquations.getComponentAt(indx);
-			r.getComponentAt(0).getComponentAt(0).text = foe[0];
-			r.getComponentAt(1).getComponentAt(0).text = foe[1];
-			r.getComponentAt(2).getComponentAt(0).text = foe[2];
-			r.getComponentAt(3).getComponentAt(0).text = foe[3];
-			r.getComponentAt(4).getComponentAt(0).text = foe[4];
-			r.getComponentAt(5).getComponentAt(0).text = foe[5];
+			falloffEquations.dataSource.add(new FalloffEquationRow(foe[0], foe[1], foe[2], foe[3], foe[4], foe[5]));
 		}
 
 		var r = xyTransform.getComponentAt(0);

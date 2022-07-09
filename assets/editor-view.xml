@@ -28,39 +28,22 @@
                     <vbox style="spacing:0;">
                         <column text="Domain" width="100%" style="border-bottom:none;border-right:none;text-align:center" />
                         <hbox style="spacing:0;">
-                            <column id="Variable" text="Variable" width="85" />
-                            <column id="Min" text="From" width="105" />
-                            <column id="Max" text="To" width="105" />
+                            <column id="domainVariable" text="Variable" width="85" />
+                            <column id="domainMinimum" text="From" width="105" />
+                            <column id="domainMaximum" text="To" width="105" />
                         </hbox>
                     </vbox>
                 </header>
 
-                <item-renderer verticalAlign="center">
-                    <textfield id="outVar" placeholder="f(x)" width="100%"/>
-                </item-renderer>
+
+                <value-and-error-renderer id="outVar" />
                 <item-renderer verticalAlign="center">
                     <label id="equalsSign" text="=" width="100%" style="font-size:12px"/>
                 </item-renderer>
-                <item-renderer verticalAlign="center">
-                    <textfield id="eqn" placeholder="Enter equation" width="100%"/>
-                </item-renderer>
-                <item-renderer verticalAlign="center">
-                    <textfield id="Variable" placeholder="var" width="100%"/>
-                </item-renderer>
-                <item-renderer verticalAlign="center">
-                    <textfield id="Min" placeholder="minimum"  width="100%"/>
-                </item-renderer>
-                <item-renderer verticalAlign="center">
-                    <textfield id="Max" placeholder="maximum"  width="100%"/>
-                </item-renderer>
-
-                <data id="falloffEquations">
-                    <item/>
-                    <item/>
-                    <item/>
-                    <item/>
-                    <item/>
-                </data>
+                <value-and-error-renderer id="eqn"/>
+                <value-and-error-renderer id="domainVariable"/>
+                <value-and-error-renderer id="domainMinimum"/>
+                <value-and-error-renderer id="domainMaximum"/>
             </tableview>
             <label text="X,Y Transform" styleName="subsection-heading"/>
             <tableview id="xyTransform" width="850" height="80" contentWidth="100%">

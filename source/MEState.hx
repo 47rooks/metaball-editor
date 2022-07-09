@@ -50,7 +50,8 @@ class MEState extends FlxState
 		_demoCamera.bgColor.alphaFloat = 0.0;
 
 		// Add UI view
-		add(new EditorView(UI_WIDTH, generateCallback));
+		var ev = new EditorView(UI_WIDTH, generateCallback);
+		add(ev);
 
 		// Setup the metaball display area
 		_demoPaneCenter = getDisplayPaneCenter();

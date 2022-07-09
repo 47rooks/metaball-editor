@@ -1,0 +1,4 @@
+<value-and-error-renderer width="100%" layoutName="vertical">
+    <textfield id="theValue" width="100%" verticalAlign="center"/>
+    <label id="theError" hidden="true" width="100%" style="color: #FF4444;" />
+</value-and-error-renderer>
