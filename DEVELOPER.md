@@ -63,6 +63,26 @@ git push origin main
 
 If the haxelib reference was directly to git it now needs to be updated to be a dev reference as above. Otherwise just rebuild.
 
+## Building Lime from Scratch
+
+If necessary you can rebuild lime itself from scratch like this. In a staging dir do this:
+
+```
+git clone --recursive https://github.com/openfl/lime
+git clone https://github.com/HaxeFoundation/format.git
+git clone https://github.com/openfl/hxp.git
+
+cd lime
+haxelib newrepo
+haxelib dev lime lime
+haxelib dev format <stagedir>\format
+haxelib dev hxp <stagedir>\hxp
+haxelib install hxcpp     <- I don't know how to clone and build this from source properly yet>
+
+haxelib run lime rebuild tools
+haxelib run lime rebuild hl
+```
+
 ## References
 
 ### Lime
