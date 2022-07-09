@@ -51,6 +51,18 @@ Finally build the metaball-editor project, either in VSCode or from the shell
 haxelib run lime test hl
 ```
 
+## Updating Submodules
+
+To update the git submodule, from the project directory do:
+
+```
+git submodule update --remote libs/haxeui-core
+git commit 'update <submodule> to <commit>'
+git push origin main
+```
+
+If the haxelib reference was directly to git it now needs to be updated to be a dev reference as above. Otherwise just rebuild.
+
 ## References
 
 ### Lime
