@@ -1,4 +1,4 @@
-package custom;
+package ui.custom;
 
 import haxe.ui.core.ItemRenderer;
 import haxe.ui.events.UIEvent;

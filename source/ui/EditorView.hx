@@ -1,4 +1,4 @@
-package;
+package ui;
 
 import EquationSystem.ErrorData;
 import haxe.ui.components.TextField;

@@ -1,4 +1,4 @@
-package;
+package ui;
 
 /**
  * DataSource object for the falloff equations table.

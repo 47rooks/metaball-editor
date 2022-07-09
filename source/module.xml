@@ -1,5 +1,5 @@
 <module>
     <components>
-        <component package="custom" />
+        <component package="ui.custom" />
     </components>
 </module>

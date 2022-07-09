@@ -1,6 +1,5 @@
 package;
 
-import EditorView.UIInputs;
 import EquationSystem.ErrorData;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -8,6 +7,8 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
+import ui.EditorView.UIInputs;
+import ui.EditorView;
 
 /**
  * The Metaball Editor state is used for processing equation input and driving the display of the metaball.
