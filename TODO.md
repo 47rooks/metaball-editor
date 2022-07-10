@@ -12,3 +12,4 @@
    * refactor error and exception information so they are together
    * Consider implementing a proper package hierarchy to clean up the chaos
    * add shader/filter to threshold the metaballs
+   * add error support to x and y pixels

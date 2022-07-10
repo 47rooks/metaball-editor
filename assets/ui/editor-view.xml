@@ -64,11 +64,13 @@
                     <hbox>
                         <label text="X" styleName="subsection-heading"/>
                         <textfield id="xpixels" text="256"/>
+                        <label id="xpixelsError" hidden="true" width="100%" style="color: #FF4444;" />
                         <label text="px" styleName="subsection-heading"/>
                     </hbox>
                     <hbox>
                         <label text="Y" styleName="subsection-heading"/>
                         <textfield id="ypixels" text="256"/>
+                        <label id="ypixelsError" hidden="true" width="100%" style="color: #FF4444;" />
                         <label text="px" styleName="subsection-heading"/>
                     </hbox>
                 </vbox>
