@@ -35,7 +35,6 @@
                     </vbox>
                 </header>
 
-
                 <value-and-error-renderer id="outVar" />
                 <item-renderer verticalAlign="center">
                     <label id="equalsSign" text="=" width="100%" style="font-size:12px"/>
@@ -48,22 +47,16 @@
             <label text="X,Y Transform" styleName="subsection-heading"/>
             <tableview id="xyTransform" width="850" height="80" contentWidth="100%">
                 <header width="100%">
-                    <column id="r" text="f(x)" width="60"/>
+                    <column id="xytVariable" text="f(x)" width="60"/>
                     <column id="equalsSign" text="=" width="30"/>
-                    <column id="transformEqn" text="Equation" width="100%"/>
+                    <column id="eqn" text="Equation" width="100%"/>
                 </header>
-                <item-renderer verticalAlign="center">
-                    <textfield id="r" placeholder="f(x)" width="100%"/>
-                </item-renderer>
+
+                <value-and-error-renderer id="xytVariable" />
                 <item-renderer verticalAlign="center">
                     <label id="equalsSign" text="=" width="100%" style="font-size:12px"/>
                 </item-renderer>
-                <item-renderer verticalAlign="center">
-                    <textfield id="transformEqn" placeholder="Enter equation" width="100%"/>
-                </item-renderer>
-                <data id="xyTransform">
-                    <item/>
-                </data>
+                <value-and-error-renderer id="eqn"/>
             </tableview>
             <vbox>
                 <label text="Size" styleName="subsection-heading"/>

@@ -3,7 +3,7 @@ package ui.custom;
 import haxe.ui.core.ItemRenderer;
 import haxe.ui.events.UIEvent;
 
-@:build(haxe.ui.ComponentBuilder.build("assets/value-and-error-renderer.xml"))
+@:build(haxe.ui.ComponentBuilder.build("assets/ui/value-and-error-renderer.xml"))
 class ValueAndErrorRenderer extends ItemRenderer
 {
 	public function new()
@@ -29,8 +29,6 @@ class ValueAndErrorRenderer extends ItemRenderer
 
 	private override function onDataChanged(data:Dynamic)
 	{
-		var d:FalloffEquationRow = data;
-
 		super.onDataChanged(data);
 		theValue.text = Std.string(Reflect.field(data, this.id));
 	}

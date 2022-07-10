@@ -32,6 +32,11 @@ class FalloffEquationRow
 			'outVar: ${outVar}, equalsSign: ${equalsSign}, eqn: ${eqn}, domainVariable: ${domainVariable}, domainMinimum: ${domainMinimum}, domainMaximum: ${domainMaximum}, theValue: ${theValue}';
 	}
 
+	/**
+	 * Return the elements of the falloff equations row as an Array of Strings. This is mostly
+	 * used by the serialization code.
+	 * @return Array<String>
+	 */
 	public function toArray():Array<String>
 	{
 		var rv = new Array<String>();

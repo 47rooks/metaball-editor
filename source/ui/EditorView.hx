@@ -23,7 +23,7 @@ typedef UIInputs =
  * MainView provides the UI for enter equations and other parameters. It also provides support for
  * saving and loading metaball definitions and images.
  */
-@:build(haxe.ui.ComponentBuilder.build("assets/editor-view.xml"))
+@:build(haxe.ui.ComponentBuilder.build("assets/ui/editor-view.xml"))
 class EditorView extends VBox
 {
 	var _generateButtonCbk:(uiInputs:UIInputs) -> Null<Array<ErrorData>>;
@@ -44,11 +44,13 @@ class EditorView extends VBox
 		super();
 		_uiWidth = uiWidth;
 		_generateButtonCbk = generateButtonCbk;
-		// falloffEquations.dataSource = new ArrayDataSource<FalloffEquationRow>();
+
 		for (i in 0...5)
 		{
 			falloffEquations.dataSource.add(new FalloffEquationRow());
 		}
+		xyTransform.dataSource.add(new XYTransformRow());
+
 		_saveRequired = false;
 
 		saveDefinitionButton.disabled = _saveRequired;
@@ -58,8 +60,6 @@ class EditorView extends VBox
 	private function onGenerate(e:MouseEvent)
 	{
 		generateButton.disabled = true;
-
-		trace('size of ds=${falloffEquations.dataSource.size}');
 
 		// Process the equations
 		var uiInputs = marshalInputs();
@@ -99,14 +99,8 @@ class EditorView extends VBox
 		}
 
 		// Get the xy transform if one is specified
-		var t = xyTransform.getComponentAt(0);
-		var txfrmEqn = new Array<String>();
-		for (j in 0...t.numComponents)
-		{
-			var c = t.getComponentAt(j);
-			var tf = c.getComponentAt(0);
-			txfrmEqn.push(tf.text);
-		}
+		var xyT:XYTransformRow = xyTransform.dataSource.get(0);
+		var txfrmEqn = xyT.toArray();
 		if (txfrmEqn[0] == null || txfrmEqn[2] == null)
 		{
 			// Do not retain a null or partly null entry
@@ -149,22 +143,6 @@ class EditorView extends VBox
 
 	private function clearUI():Void
 	{
-		// Clear the xy transform inputs
-		var t = xyTransform.getComponentAt(0);
-		for (j in 0...t.numComponents)
-		{
-			var c = t.getComponentAt(j);
-			var tf = c.getComponentAt(0);
-			if (j == 1)
-			{
-				tf.text = "=";
-			}
-			else
-			{
-				tf.text = null;
-			}
-		}
-
 		xpixels.text = "256";
 		ypixels.text = "256";
 	}
@@ -179,10 +157,9 @@ class EditorView extends VBox
 			falloffEquations.dataSource.add(new FalloffEquationRow(foe[0], foe[1], foe[2], foe[3], foe[4], foe[5]));
 		}
 
-		var r = xyTransform.getComponentAt(0);
-		r.getComponentAt(0).getComponentAt(0).text = definition.xyTransform[0];
-		r.getComponentAt(1).getComponentAt(0).text = definition.xyTransform[1];
-		r.getComponentAt(2).getComponentAt(0).text = definition.xyTransform[2];
+		xyTransform.dataSource.clear();
+		var xyT = definition.xyTransform;
+		xyTransform.dataSource.add(new XYTransformRow(xyT[0], xyT[1], xyT[2]));
 
 		xpixels.text = Std.string(definition.x);
 		ypixels.text = Std.string(definition.y);
