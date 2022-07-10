@@ -69,6 +69,11 @@ class MEState extends FlxState
 	 */
 	private function generateCallback(uiInputs:UIInputs):Null<Array<ErrorData>>
 	{
+		if (uiInputs.clear)
+		{
+			clearDisplayPane();
+			return null;
+		}
 		try
 		{
 			_equations = new EquationSystem(uiInputs.falloffFunctions, uiInputs.xyTransform);
@@ -125,6 +130,13 @@ class MEState extends FlxState
 			// clear the formulaeUpdated flag so we only do this once per new set of equations
 			_formulaeUpdated = false;
 		}
+	}
+
+	private function clearDisplayPane():Void
+	{
+		clearCornerMarkers();
+		remove(_editorSprite);
+		_editorSprite = null;
 	}
 
 	private function clearCornerMarkers():Void

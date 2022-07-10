@@ -13,3 +13,4 @@
    * Consider implementing a proper package hierarchy to clean up the chaos
    * add shader/filter to threshold the metaballs
    * add error support to x and y pixels
+   * fix _saveRequired in EditorView so it properly indicates when save is required

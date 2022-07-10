@@ -17,6 +17,7 @@ typedef UIInputs =
 	var xyTransform:Array<String>;
 	var x:Int;
 	var y:Int;
+	var clear:Bool;
 }
 
 /**
@@ -48,17 +49,7 @@ class EditorView extends VBox
 		_uiWidth = uiWidth;
 		_generateButtonCbk = generateButtonCbk;
 
-		for (i in 0...5)
-		{
-			falloffEquations.dataSource.add(new FalloffEquationRow());
-		}
-		xyTransform.dataSource.add(new XYTransformRow());
-		xpixels.text = DEFAULT_MB_WIDTH;
-		ypixels.text = DEFAULT_MB_HEIGHT;
-
-		_saveRequired = false;
-
-		saveDefinitionButton.disabled = _saveRequired;
+		clearDefinitions();
 	}
 
 	@:bind(generateButton, MouseEvent.CLICK)
@@ -116,7 +107,8 @@ class EditorView extends VBox
 			falloffFunctions: falloffFunctions,
 			xyTransform: txfrmEqn,
 			x: Std.parseInt(xpixels.text),
-			y: Std.parseInt(ypixels.text)
+			y: Std.parseInt(ypixels.text),
+			clear: false
 		}
 	}
 
@@ -189,6 +181,38 @@ class EditorView extends VBox
 			}
 		}
 		dialog.show();
+	}
+
+	@:bind(clearDefinitionButton, MouseEvent.CLICK)
+	private function onClear(e:MouseEvent)
+	{
+		clearDefinitionButton.disabled = true;
+		clearDefinitions();
+		clearDefinitionButton.disabled = false;
+	}
+
+	private function clearDefinitions():Void
+	{
+		generateButton.disabled = true;
+		_saveRequired = false;
+
+		falloffEquations.dataSource.clear();
+		xyTransform.dataSource.clear();
+		for (i in 0...5)
+		{
+			falloffEquations.dataSource.add(new FalloffEquationRow());
+		}
+		xyTransform.dataSource.add(new XYTransformRow());
+		xpixels.text = DEFAULT_MB_WIDTH;
+		ypixels.text = DEFAULT_MB_HEIGHT;
+
+		_generateButtonCbk({
+			falloffFunctions: new Array<Array<String>>(),
+			xyTransform: new Array<String>(),
+			x: Std.parseInt(xpixels.text),
+			y: Std.parseInt(ypixels.text),
+			clear: true
+		});
 	}
 
 	@:bind(exitButton, MouseEvent.CLICK)
