@@ -32,6 +32,9 @@ class EditorView extends VBox
 	@:bind(saveDefinitionButton.disabled)
 	var _saveRequired:Bool = true;
 
+	final DEFAULT_MB_WIDTH = "256";
+	final DEFAULT_MB_HEIGHT = "256";
+
 	/**
 	 * Constructor
 	 *
@@ -50,6 +53,8 @@ class EditorView extends VBox
 			falloffEquations.dataSource.add(new FalloffEquationRow());
 		}
 		xyTransform.dataSource.add(new XYTransformRow());
+		xpixels.text = DEFAULT_MB_WIDTH;
+		ypixels.text = DEFAULT_MB_HEIGHT;
 
 		_saveRequired = false;
 
@@ -143,8 +148,8 @@ class EditorView extends VBox
 
 	private function clearUI():Void
 	{
-		xpixels.text = "256";
-		ypixels.text = "256";
+		xpixels.text = DEFAULT_MB_WIDTH;
+		ypixels.text = DEFAULT_MB_HEIGHT;
 	}
 
 	private function unmarshalDefinitionToUI(definitionText:String):Void
