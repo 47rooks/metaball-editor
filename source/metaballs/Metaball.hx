@@ -1,4 +1,4 @@
-package metaball;
+package metaballs;
 
 import flixel.FlxCamera;
 import flixel.FlxG;

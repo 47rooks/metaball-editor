@@ -8,10 +8,10 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
-import metaball.Metaball;
-import metaball.MetaballBuilder;
-import metaball.equations.ESException;
-import metaball.equations.EquationSystem;
+import metaballs.Metaball;
+import metaballs.MetaballBuilder;
+import metaballs.equations.ESException;
+import metaballs.equations.EquationSystem;
 import ui.EditorView.UIInputs;
 import ui.EditorView;
 

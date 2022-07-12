@@ -1,4 +1,4 @@
-package metaball.equations;
+package metaballs.equations;
 
 import errors.ErrorDataBuilder;
 import haxe.Exception;
