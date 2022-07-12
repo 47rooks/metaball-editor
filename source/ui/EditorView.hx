@@ -1,6 +1,6 @@
 package ui;
 
-import EquationSystem.ErrorData;
+import errors.ErrorData;
 import haxe.ui.components.TextField;
 import haxe.ui.containers.VBox;
 import haxe.ui.containers.dialogs.Dialog.DialogButton;
@@ -10,6 +10,7 @@ import haxe.ui.containers.dialogs.OpenFileDialog;
 import haxe.ui.containers.dialogs.SaveFileDialog;
 import haxe.ui.data.ArrayDataSource;
 import haxe.ui.events.MouseEvent;
+import haxe.ui.events.UIEvent;
 
 typedef UIInputs =
 {
@@ -27,7 +28,7 @@ typedef UIInputs =
 @:build(haxe.ui.ComponentBuilder.build("assets/ui/editor-view.xml"))
 class EditorView extends VBox
 {
-	var _generateButtonCbk:(uiInputs:UIInputs) -> Null<Array<ErrorData>>;
+	var _generateButtonCbk:(uiInputs:UIInputs) -> Null<ErrorData>;
 	var _uiWidth:Int;
 
 	@:bind(saveDefinitionButton.disabled)
@@ -43,7 +44,7 @@ class EditorView extends VBox
 	 * @param generateButtonCbk - function to call when the generate button it pressed. Receives the
 	 * input collected in the UI.
 	 */
-	public function new(uiWidth:Int, generateButtonCbk:(uiInputs:UIInputs) -> Null<Array<ErrorData>>)
+	public function new(uiWidth:Int, generateButtonCbk:(uiInputs:UIInputs) -> Null<ErrorData>)
 	{
 		super();
 		_uiWidth = uiWidth;
@@ -62,21 +63,60 @@ class EditorView extends VBox
 		var errors = _generateButtonCbk(uiInputs);
 		if (errors != null)
 		{
-			for (err in errors)
+			for (err in errors.falloffEquationErrors)
 			{
-				switch (err.eqnType)
-				{
-					case FALLOFF:
-						var r = falloffEquations.getComponentAt(err.eqnNumber).getComponentAt(err.eqnFieldNumber);
-						var errField = r.findComponent("theError");
-						errField.text = err.errorMsg;
-						errField.addClass("invalid-value");
-						errField.show();
-					case XY_TRANSFORM:
-				}
+				var r = falloffEquations.getComponentAt(err.eqnNumber).getComponentAt(err.eqnFieldNumber);
+				var errField = r.findComponent("theError");
+				var valField = r.findComponent("theValue");
+				errField.text = err.errorMsg;
+				valField.addClass("invalid-value"); // Move to the textfield not the error
+				errField.show();
+			}
+			for (err in errors.xyTransformErrors)
+			{
+				var r = xyTransform.getComponentAt(err.eqnNumber).getComponentAt(err.eqnFieldNumber);
+				var errField = r.findComponent("theError");
+				var valField = r.findComponent("theValue");
+				errField.text = err.errorMsg;
+				valField.addClass("invalid-value");
+				errField.show();
+			}
+			if (errors.xpixelError != null)
+			{
+				xpixelsError.text = errors.xpixelError.errorMsg;
+				xpixels.addClass("invalid-value");
+				xpixelsError.show();
+			}
+			if (errors.ypixelError != null)
+			{
+				ypixelsError.text = errors.ypixelError.errorMsg;
+				ypixels.addClass("invalid-value");
+				ypixelsError.show();
 			}
 		}
 		generateButton.disabled = false;
+	}
+
+	@:bind(xpixels, UIEvent.CHANGE)
+	private function onXpixelsChange(_)
+	{
+		if (xpixelsError != null)
+		{
+			xpixelsError.text = null;
+			xpixels.removeClass("invalid-value");
+			xpixelsError.hide();
+		}
+	}
+
+	@:bind(ypixels, UIEvent.CHANGE)
+	private function onYpixelsChange(_)
+	{
+		if (ypixelsError != null)
+		{
+			ypixelsError.text = null;
+			ypixels.removeClass("invalid-value");
+			ypixelsError.hide();
+		}
 	}
 
 	private function marshalInputs():UIInputs

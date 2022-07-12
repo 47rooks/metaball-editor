@@ -1,6 +1,6 @@
 package;
 
-import EquationSystem.ErrorData;
+import errors.ErrorDataBuilder;
 import haxe.Exception;
 
 /**
@@ -9,14 +9,17 @@ import haxe.Exception;
  */
 class ESException extends Exception
 {
-	public var errorData(default, null):Null<Array<ErrorData>>;
+	public var errors(default, null):Null<ErrorDataBuilder>;
 
-	public function new(message:String, ?previous:Exception, ?native:Any, ?data:Array<ErrorData>)
+	/**
+	 * Constructor
+	 * @param message the top level message for these errors
+	 * @param previous any previous exception that this is chained to
+	 * @param errors A builder containing errors accumulated during EquationSystem processing
+	 */
+	public function new(message:String, ?previous:Exception, errorBuilder:ErrorDataBuilder)
 	{
-		super(message, previous, native);
-		if (data != null)
-		{
-			errorData = data;
-		}
+		super(message, previous);
+		errors = errorBuilder;
 	}
 }

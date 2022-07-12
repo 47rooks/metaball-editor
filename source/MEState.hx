@@ -1,6 +1,7 @@
 package;
 
-import EquationSystem.ErrorData;
+import errors.ErrorData;
+import errors.ErrorDataBuilder;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -67,7 +68,7 @@ class MEState extends FlxState
 	 * @param mbHeight the height in pixels of the final metaball image
 	 * @return Null<Array<ErrorData>> if there are errors in the input equations error data is returned, otherwise null.
 	 */
-	private function generateCallback(uiInputs:UIInputs):Null<Array<ErrorData>>
+	private function generateCallback(uiInputs:UIInputs):Null<ErrorData>
 	{
 		if (uiInputs.clear)
 		{
@@ -76,16 +77,31 @@ class MEState extends FlxState
 		}
 		try
 		{
-			_equations = new EquationSystem(uiInputs.falloffFunctions, uiInputs.xyTransform);
+			var edb = new ErrorDataBuilder();
+			// Vaidate width and height
+			if (uiInputs.x <= 0)
+			{
+				edb.setXPixelError({errorMsg: 'X pixels must be a positive integer'});
+			}
+			if (uiInputs.y <= 0)
+			{
+				edb.setYPixelError({errorMsg: 'Y pixels must be a positive integer'});
+			}
+			_equations = new EquationSystem(uiInputs.falloffFunctions, uiInputs.xyTransform, edb);
 			_mbWidth = uiInputs.x;
 			_mbHeight = uiInputs.y;
 
+			if (edb.hasErrors)
+			{
+				clearDisplayPane();
+				return edb.emit();
+			}
 			_formulaeUpdated = true;
 		}
 		catch (e:ESException)
 		{
-			trace('e=${e.errorData}'); // FIXME once error reporting is added remove this
-			return e.errorData;
+			clearDisplayPane();
+			return e.errors.emit();
 		}
 		return null;
 	}

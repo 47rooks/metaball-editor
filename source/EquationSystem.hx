@@ -1,5 +1,7 @@
 package;
 
+import errors.ErrorDataBuilder;
+
 typedef Function =
 {
 	var fx:String;
@@ -13,21 +15,6 @@ typedef PiecewiseFunction =
 	var domainVariable:String;
 	var domainMinimum:Float;
 	var domainMaximum:Float;
-}
-
-enum EquationType
-{
-	FALLOFF;
-	XY_TRANSFORM;
-}
-
-typedef ErrorData =
-{
-	var eqnType:EquationType;
-	var eqnNumber:Int;
-	var eqnFieldNumber:Int;
-	var errorPos:Int;
-	var errorMsg:String;
 }
 
 /**
@@ -57,11 +44,21 @@ class EquationSystem
 	var _domainVariables:Array<String>;
 	var _inputVariables:Array<String>;
 
-	public function new(falloffEqns:Array<Array<String>>, xyTransform:Array<String>)
+	var _edb:ErrorDataBuilder;
+
+	public function new(falloffEqns:Array<Array<String>>, xyTransform:Array<String>, ?errorDataBuilder:ErrorDataBuilder)
 	{
 		_falloffFunctionsStr = falloffEqns;
 		_xyTransformStr = xyTransform;
 		_falloffFunctions = new Array<PiecewiseFunction>();
+		if (errorDataBuilder == null)
+		{
+			_edb = new ErrorDataBuilder();
+		}
+		else
+		{
+			_edb = errorDataBuilder;
+		}
 
 		// Process the equations to ensure we can create a
 		// fully functional object.
@@ -74,8 +71,6 @@ class EquationSystem
 	 */
 	private function createFormulaFromInputs():Void
 	{
-		var errors = new Array<ErrorData>();
-
 		// Process the falloff equations
 		for (i => ie in _falloffFunctionsStr)
 		{
@@ -104,8 +99,7 @@ class EquationSystem
 						}
 						else
 						{
-							errors.push({
-								eqnType: EquationType.FALLOFF,
+							_edb.addFalloffEquationError({
 								eqnNumber: i,
 								eqnFieldNumber: j,
 								errorPos: -1,
@@ -124,8 +118,7 @@ class EquationSystem
 						catch (e:Dynamic)
 						{
 							trace('e=${e}');
-							errors.push({
-								eqnType: EquationType.FALLOFF,
+							_edb.addFalloffEquationError({
 								eqnNumber: i,
 								eqnFieldNumber: j,
 								errorPos: e.pos,
@@ -160,8 +153,7 @@ class EquationSystem
 						tDomainMin = Std.parseFloat(s);
 						if (tDomainVar != null && Math.isNaN(tDomainMin))
 						{
-							errors.push({
-								eqnType: EquationType.FALLOFF,
+							_edb.addFalloffEquationError({
 								eqnNumber: i,
 								eqnFieldNumber: j,
 								errorPos: -1,
@@ -173,8 +165,7 @@ class EquationSystem
 						tDomainMax = Std.parseFloat(s);
 						if (tDomainVar != null && Math.isNaN(tDomainMax))
 						{
-							errors.push({
-								eqnType: EquationType.FALLOFF,
+							_edb.addFalloffEquationError({
 								eqnNumber: i,
 								eqnFieldNumber: j,
 								errorPos: -1,
@@ -200,21 +191,35 @@ class EquationSystem
 		// Process the xy transform if there is on
 		if (_xyTransformStr.length > 0 && _xyTransformStr[0].length > 0 && _xyTransformStr[2].length > 0)
 		{
-			_xyTransform = {
-				fx: _xyTransformStr[0],
-				formula: _xyTransformStr[2]
-			};
-			// FIXME verify that the transform only refers to x and y
-			// Create error if not
-			_hasXYTransform = true;
+			try
+			{
+				// Hopefully it pukes on empty strings
+				_xyTransform = {
+					fx: _xyTransformStr[0],
+					formula: _xyTransformStr[2]
+				};
+				// FIXME verify that the transform only refers to x and y
+				// Create error if not
+				_hasXYTransform = true;
+			}
+			catch (e:Dynamic)
+			{
+				trace('e=${e}');
+				_edb.addXYTransformError({
+					eqnNumber: 0,
+					eqnFieldNumber: 2,
+					errorPos: e.pos,
+					errorMsg: 'formula error: ${e}'
+				});
+			}
 		}
 
 		// Handle any errors
-		if (errors.length > 0)
+		if (_edb.hasErrors)
 		{
 			_falloffFunctions = [];
 			_xyTransform = null;
-			throw new ESException("Error during formula creation", null, null, errors);
+			throw new ESException("Error during formula creation", null, _edb);
 		}
 	}
 

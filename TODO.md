@@ -1,7 +1,7 @@
 # To Do
 
    * add button to each row to clear the equation
-   * add error display
+   * add error handling for xyTransform f(x)
    * expand piecewise equation restrictions to work directly with x,y so intermediate equation is not required
    * add PNG save
    * add demo pane to show how the metaballs look while moving
@@ -14,3 +14,5 @@
    * add shader/filter to threshold the metaballs
    * add error support to x and y pixels
    * fix _saveRequired in EditorView so it properly indicates when save is required
+   * add unit tests
+   * do a doc pass

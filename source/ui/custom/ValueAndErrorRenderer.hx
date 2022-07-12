@@ -17,7 +17,7 @@ class ValueAndErrorRenderer extends ItemRenderer
 		if (theError != null)
 		{
 			theError.text = null;
-			theError.removeClass("invalid-value");
+			theValue.removeClass("invalid-value");
 			theError.hide();
 		}
 		if (this.data != null)
