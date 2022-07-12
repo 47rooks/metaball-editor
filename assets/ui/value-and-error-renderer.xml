@@ -1,3 +1,9 @@
+<!-- 
+    Value and error renderer provides a textfield for input and a label for error information.
+    theError field is initially hidden and must have its text attribute set and then be made
+    visible to display the error text. Generally when displaying error information the invalid-value
+    style name is added to the theValue field to highlight that the field has an error.
+-->
 <value-and-error-renderer width="100%" layoutName="vertical">
     <textfield id="theValue" width="100%" verticalAlign="center"/>
     <label id="theError" hidden="true" width="100%" style="color: #FF4444;" />

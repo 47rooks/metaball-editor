@@ -15,7 +15,7 @@ class ESException extends Exception
 	 * Constructor
 	 * @param message the top level message for these errors
 	 * @param previous any previous exception that this is chained to
-	 * @param errors A builder containing errors accumulated during EquationSystem processing
+	 * @param errorBuilder A builder containing errors accumulated during EquationSystem processing
 	 */
 	public function new(message:String, ?previous:Exception, errorBuilder:ErrorDataBuilder)
 	{

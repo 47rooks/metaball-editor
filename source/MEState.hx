@@ -16,16 +16,46 @@ import ui.EditorView;
  */
 class MEState extends FlxState
 {
-	final UI_WIDTH:Int = FlxG.width;
+	final UI_WIDTH:Int;
 
+	/**
+	 * Display pane camera for the editor
+	 */
 	var _demoCamera:FlxCamera;
+
+	/**
+	 * The system of equations defining the metaball
+	 */
 	var _equations:EquationSystem;
+
+	/**
+	 * Indicator indicating that the formulae are valid and have been updated and the metaball may be created and drawn.
+	 */
 	var _formulaeUpdated:Bool = false;
+
+	/**
+	 * The width of the metaball in pixels
+	 */
 	var _mbWidth:Int;
+
+	/**
+	 * The height of the metaball in pixels
+	 */
 	var _mbHeight:Int;
+
+	/**
+	 * The center of the display pane
+	 */
 	var _demoPaneCenter:FlxPoint;
+
+	/**
+	 * The sprite to display the metaball
+	 */
 	var _editorSprite:Metaball;
 
+	/*
+	 * These are border corner sprites which are drawn and the corners of the metaball to show the extent of the metaball image.
+	 */
 	var _topLeft:FlxSprite;
 	var _bottomLeft:FlxSprite;
 	var _topRight:FlxSprite;
@@ -70,6 +100,7 @@ class MEState extends FlxState
 	 */
 	private function generateCallback(uiInputs:UIInputs):Null<ErrorData>
 	{
+		// Process the input
 		if (uiInputs.clear)
 		{
 			clearDisplayPane();
@@ -78,7 +109,8 @@ class MEState extends FlxState
 		try
 		{
 			var edb = new ErrorDataBuilder();
-			// Vaidate width and height
+			// Vaidate width and height before the EquationSystem validation is done.
+			// This will make sure we get all possible validation errors in a single pass.
 			if (uiInputs.x <= 0)
 			{
 				edb.setXPixelError({errorMsg: 'X pixels must be a positive integer'});
@@ -88,18 +120,23 @@ class MEState extends FlxState
 				edb.setYPixelError({errorMsg: 'Y pixels must be a positive integer'});
 			}
 			_equations = new EquationSystem(uiInputs.falloffFunctions, uiInputs.xyTransform, edb);
-			_mbWidth = uiInputs.x;
-			_mbHeight = uiInputs.y;
 
+			// If there are errors then clear the display and return the errors for display to the user.
+			// This handles errors where the EquationSystem is ok but other validations failed.
 			if (edb.hasErrors)
 			{
 				clearDisplayPane();
 				return edb.emit();
 			}
+
+			_mbWidth = uiInputs.x;
+			_mbHeight = uiInputs.y;
 			_formulaeUpdated = true;
 		}
 		catch (e:ESException)
 		{
+			// This case handles errors thrown out of the EquationSystem validation. It will also include
+			// any other failure information from other validations.
 			clearDisplayPane();
 			return e.errors.emit();
 		}
@@ -124,6 +161,7 @@ class MEState extends FlxState
 			Sys.exit(0);
 		}
 
+		// If the equations are valid and have changed redraw the metaball sprite.
 		if (_formulaeUpdated)
 		{
 			// Remove old sprite if there is one
@@ -163,6 +201,11 @@ class MEState extends FlxState
 		remove(_bottomRight);
 	}
 
+	/**
+	 * Create small corner markers at the edge of the metaball sprite.
+	 * FIXME This does not handle the case where the metaball image is less than 16 x 16 pixels, which will
+	 * result in a noughts and crossed grid being drawn.
+	 */
 	private function addUpdateCornerMarkers():Void
 	{
 		final LINE_LENGTH = 20;

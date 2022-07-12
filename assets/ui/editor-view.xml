@@ -17,6 +17,10 @@
             font-size: 12px;
         }
     </style>
+    <!-- 
+        The falloff and XY transform tables do not have <data> elements because all data is managed from code.
+        value-and-error-renderers are used for any textfields that may be validated and must report errors.
+    -->
     <frame text="Editor" styleName="section-heading">
         <vbox>
             <label text="Falloff Equations" styleName="subsection-heading"/>

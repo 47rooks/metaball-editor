@@ -19,6 +19,7 @@ class MetaballBuilder
 
 	/**
 	 * Constructor
+	 * @param es the EquationSystem which defines the metaball
 	 * @param width width of final bitmap in pixels
 	 * @param height height of final bitmap in pixels
 	 */

@@ -1,7 +1,7 @@
 package ui;
 
 /**
- * DataSource object for the XY transform equation table.
+ * DataSource object for the XY transform equation table. Each instance of this class represents one row in the table.
  */
 class XYTransformRow
 {
@@ -11,6 +11,12 @@ class XYTransformRow
 	// dummy value to support the falloffRenderer field theValue
 	public var theValue:String;
 
+	/**
+	 * Constructor
+	 * @param xytVariable the output variable of the transform, expected to match the falloff equation domain variable.
+	 * @param equalsSign boilerplate '=' sign
+	 * @param eqn the transform equation
+	 */
 	public function new(xytVariable:String = "", equalsSign:String = "=", eqn:String = "")
 	{
 		this.xytVariable = xytVariable;
@@ -19,6 +25,10 @@ class XYTransformRow
 		theValue = "";
 	}
 
+	/**
+	 * Return a string representation, for debugging
+	 * @return String the string form of the row
+	 */
 	public function toString():String
 	{
 		return 'domainVariable: ${xytVariable}, equalsSign: ${equalsSign}, eqn: ${eqn}';

@@ -1,3 +1,6 @@
+<!--
+    HaxeUI custom component package definition
+ -->
 <module>
     <components>
         <component package="ui.custom" />

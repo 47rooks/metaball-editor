@@ -2,18 +2,50 @@ package;
 
 import errors.ErrorDataBuilder;
 
+/**
+ * Typedef for a simple function. This is currently only used for the XY transform equation.
+ */
 typedef Function =
 {
+	/**
+	 * The output variable name
+	 */
 	var fx:String;
+
+	/**
+	 * The function as a Formula object
+	 */
 	var formula:Formula;
 }
 
+/**
+ * Typedef for a single function in a piecewise function, defining the domain over which this function applies.
+ */
 typedef PiecewiseFunction =
 {
+	/**
+	 * The output variable name
+	 */
 	var fx:String;
+
+	/**
+	 * The function as a Formula object
+	 */
 	var formula:Formula;
+
+	/**
+	 * The domain variable name
+	 */
 	var domainVariable:String;
+
+	/**
+	 * The minimum value for the domain for which this function applies
+	 */
 	var domainMinimum:Float;
+
+	/**
+	 * The maximum value for the domain for which this function applies
+	 */
 	var domainMaximum:Float;
 }
 
@@ -34,18 +66,62 @@ typedef PiecewiseFunction =
  */
 class EquationSystem
 {
+	/**
+	 * The falloff equations as entered in the UI
+	 */
 	var _falloffFunctionsStr:Array<Array<String>>;
+
+	/**
+	 * The falloff equations once processed into Formula form
+	 */
 	var _falloffFunctions:Array<PiecewiseFunction>;
+
+	/**
+	 * The XY transform equation as entered in the UI
+	 */
 	var _xyTransformStr:Array<String>;
+
+	/**
+	 * The XY transform equation in Formula form
+	 */
 	var _xyTransform:Function;
+
+	/**
+	 * Indicator that there is a transform equation
+	 */
 	var _hasXYTransform:Bool;
+
+	/**
+	 * The final output variable of the falloff equations
+	 */
 	var _outputVariable:String;
+
+	/**
+	 * The parameters of the falloff equations
+	 */
 	var _eqnParameters:Array<String>;
+
+	/**
+	 * The domain variables of the falloff equation. May be empty.
+	 */
 	var _domainVariables:Array<String>;
+
+	/**
+	 * The input variables. These should ultimately be just X and Y.
+	 */
 	var _inputVariables:Array<String>;
 
 	var _edb:ErrorDataBuilder;
 
+	/**
+	 * Constructor
+	 * 
+	 * The basic principle is to only provide an object if there are no errors.
+	 * 
+	 * @param falloffEqns a list of falloff equations as an array of string arrays
+	 * @param xyTransform the XY transform equation in string form
+	 * @param errorDataBuilder an error accumulator for collecting errors found during processing
+	 */
 	public function new(falloffEqns:Array<Array<String>>, xyTransform:Array<String>, ?errorDataBuilder:ErrorDataBuilder)
 	{
 		_falloffFunctionsStr = falloffEqns;
@@ -92,6 +168,7 @@ class EquationSystem
 				switch (j)
 				{
 					case 0:
+						// The output variable
 						// For now a simple single letter string will do
 						if (s != null && s.length == 1)
 						{
@@ -110,6 +187,7 @@ class EquationSystem
 					case 1:
 					// Skip - this is the boilerplate '=' character
 					case 2:
+						// The falloff equation
 						try
 						{
 							// Hopefully it pukes on empty strings
@@ -117,7 +195,7 @@ class EquationSystem
 						}
 						catch (e:Dynamic)
 						{
-							trace('e=${e}');
+							// Convert the exception to error data
 							_edb.addFalloffEquationError({
 								eqnNumber: i,
 								eqnFieldNumber: j,
@@ -127,6 +205,7 @@ class EquationSystem
 							formulaHasErrors = true;
 						}
 					case 3:
+						// The domain variable
 						if (s != null)
 						{
 							if (s.length == 1)
@@ -141,6 +220,8 @@ class EquationSystem
 						else
 						{
 							tDomainVar = null;
+							// TODO currently this means that multi-char domain vars are dropped on the
+							// floor and no error is shown
 							// errors.push({
 							// 	eqnNumber: i,
 							// 	eqnFieldNumber: j,
@@ -150,6 +231,7 @@ class EquationSystem
 							// formulaHasErrors = true;
 						}
 					case 4:
+						// Minimum domain value
 						tDomainMin = Std.parseFloat(s);
 						if (tDomainVar != null && Math.isNaN(tDomainMin))
 						{
@@ -162,6 +244,7 @@ class EquationSystem
 							formulaHasErrors = true;
 						}
 					case 5:
+						// Maximum domain value
 						tDomainMax = Std.parseFloat(s);
 						if (tDomainVar != null && Math.isNaN(tDomainMax))
 						{
@@ -217,6 +300,7 @@ class EquationSystem
 		// Handle any errors
 		if (_edb.hasErrors)
 		{
+			// Throw exception to terminate construction as errors were found
 			_falloffFunctions = [];
 			_xyTransform = null;
 			throw new ESException("Error during formula creation", null, _edb);
@@ -308,6 +392,9 @@ class EquationSystem
 		}
 		else
 		{
+			// FIXME
+			// This presumes that if there is no XY transform then there is a single falloff equation.
+			// But this restriction is not enforced so output in this case could be wrong.
 			result = _falloffFunctions[0].formula.result;
 		}
 

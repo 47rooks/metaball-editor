@@ -1,7 +1,7 @@
 package ui;
 
 /**
- * DataSource object for the falloff equations table.
+ * DataSource object for the falloff equations table. And instance of this object represents one row.
  */
 class FalloffEquationRow
 {
@@ -14,6 +14,15 @@ class FalloffEquationRow
 	// dummy value to support the falloffRenderer field theValue
 	public var theValue:String;
 
+	/**
+	 * Constructor
+	 * @param outVar output variable
+	 * @param equalsSign the equals sign - this is boilerblate and should be removed at some point
+	 * @param eqn the equation
+	 * @param domainVariable the intermediate domain variable, if specified
+	 * @param domainMinimum the minimum value, convertible to float, -Infinity is a valid value
+	 * @param domainMaximum the maximum value, convertible to float, Infinity is a valid value
+	 */
 	public function new(outVar:String = "", equalsSign:String = "=", eqn:String = "", domainVariable:String = "", domainMinimum:String = "",
 			domainMaximum:String = "")
 	{
@@ -26,6 +35,10 @@ class FalloffEquationRow
 		theValue = "";
 	}
 
+	/**
+	 * Return a string representation, mostly for debugging.
+	 * @return String
+	 */
 	public function toString():String
 	{
 		return
