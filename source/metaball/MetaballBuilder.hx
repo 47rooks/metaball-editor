@@ -1,6 +1,7 @@
-package;
+package metaball;
 
 import lime.math.ARGB;
+import metaball.equations.EquationSystem;
 import openfl.display.BitmapData;
 
 /**

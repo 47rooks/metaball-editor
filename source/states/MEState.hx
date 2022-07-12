@@ -1,4 +1,4 @@
-package;
+package states;
 
 import errors.ErrorData;
 import errors.ErrorDataBuilder;
@@ -8,6 +8,10 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
+import metaball.Metaball;
+import metaball.MetaballBuilder;
+import metaball.equations.ESException;
+import metaball.equations.EquationSystem;
 import ui.EditorView.UIInputs;
 import ui.EditorView;
 

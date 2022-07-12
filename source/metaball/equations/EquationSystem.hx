@@ -1,4 +1,4 @@
-package;
+package metaball.equations;
 
 import errors.ErrorDataBuilder;
 
