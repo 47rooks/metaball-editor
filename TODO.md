@@ -1,5 +1,8 @@
 # To Do
 
+### Bugs
+
+### Features
    * add button to each row to clear the equation
    * add error handling for xyTransform f(x)
    * expand piecewise equation restrictions to work directly with x,y so intermediate equation is not required

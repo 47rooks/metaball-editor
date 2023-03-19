@@ -8,7 +8,6 @@ import haxe.ui.containers.dialogs.Dialogs;
 import haxe.ui.containers.dialogs.MessageBox.MessageBoxType;
 import haxe.ui.containers.dialogs.OpenFileDialog;
 import haxe.ui.containers.dialogs.SaveFileDialog;
-import haxe.ui.data.ArrayDataSource;
 import haxe.ui.events.MouseEvent;
 import haxe.ui.events.UIEvent;
 
@@ -304,7 +303,6 @@ class EditorView extends VBox
 	// Clear the editor and display pane.
 	private function clearDefinitions():Void
 	{
-		generateButton.disabled = true;
 		_saveRequired = false;
 
 		// Clear existing data
